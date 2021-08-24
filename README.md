@@ -1,5 +1,5 @@
 # iAssets
-Generate imageset and appiconsets from png files.
+Generate imageset and appiconsets from png/jpg files.
 
 ### Installation:
 
