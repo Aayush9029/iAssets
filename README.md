@@ -67,3 +67,6 @@ Some cool facts?
 - **Logger is used to log the tasks and will be saved as task.log**
 
 ---
+
+
+**You are free to use, modify, distribute or sell this code no credits required.**
