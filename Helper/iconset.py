@@ -288,7 +288,7 @@ class IconSet:
                     "scale": "1x"
                 }
             ],
-            "author": "Iconizer",
+            "author": "iAssets",
             "version": "2020.11.0"
         }
 
