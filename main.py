@@ -3,78 +3,89 @@ import threading
 from os import path
 from posix import listdir
 
-from Helper import imageset, util
+from Helper import iconset, imageset, util
 
 util = util.Utils()
 
 
-def test():
-    # Folder containing the images
-    imageFolder = "tests/images"
+def main(imageFolder, iconSet=False, imageSet=False, outputFolder=None):
+    if imageSet:
 
-    storedSets = []
+        storedSets = []
 
-    # Load all images into memory
-    for file in listdir(imageFolder):
-        if file.endswith(".png") or file.endswith(".jpg"):
-            image = file
-            imagePath = path.join("tests/images", image)
-            storedSets.append(imageset.ImageSet(
-                image.split(".")[0], imagePath)
-            )
-        else:
-           util.log_error(file + " is not a valid image")
+        # Load all images into memory
+        for file in listdir(imageFolder):
+            if file.endswith(".png") or file.endswith(".jpg"):
+                image = file
+                name = image.split(".")[0]
+                imagePath = path.join(imageFolder, image)
+                storedSets.append(
+                    imageset.ImageSet(
+                        name=name,
+                        imagePath=imagePath,
+                        savePath=f"{outputFolder}/ImageSets/{name}.imageset"
+                    )
+                )
+            else:
+                util.log_error(
+                    file + " is not a valid image -> Can't generate ImageSet")
 
-    # Create a thread for each image
-    threads = []
-    for image in storedSets:
-        thread = threading.Thread(target=image.generateImageset)
-        thread.start()
-        threads.append(thread)
+        # Create a thread for each image
+        threads = []
+        for image in storedSets:
+            thread = threading.Thread(target=image.generate_imageset)
+            thread.start()
+            threads.append(thread)
 
+    if iconSet:
 
-def main(imageFolder):
-    # Folder containing the images
-    imageFolder = "tests/images"
+        storedSets = []
 
-    storedSets = []
+        # Load all images into memory
+        for file in listdir(imageFolder):
+            if file.endswith(".png") or file.endswith(".jpg"):
+                image = file
+                name = image.split(".")[0]
+                imagePath = path.join(imageFolder, image)
+                storedSets.append(
+                    iconset.IconSet(
+                        name=name,
+                        imagePath=imagePath,
+                        savePath=f"{outputFolder}/AppIconSets/{name}.appiconset"
+                    )
+                )
 
-    # Load all images into memory
-    for file in listdir(imageFolder):
-        if file.endswith(".png") or file.endswith(".jpg"):
-            image = file
-            imagePath = path.join("tests/images", image)
-            storedSets.append(imageset.ImageSet(
-                image.split(".")[0], imagePath)
-            )
-        else:
-           util.log_error(file + " is not a valid image")
+            else:
+                util.log_error(
+                    file + " is not a valid image -> Can't generate App Icon")
 
-    # Create a thread for each image
-    threads = []
-    for image in storedSets:
-        thread = threading.Thread(target=image.generateImageset)
-        thread.start()
-        threads.append(thread)
+        # Create a thread for each image
+        threads = []
+        for image in storedSets:
+            thread = threading.Thread(target=image.generate_icon_set)
+            thread.start()
+            threads.append(thread)
 
-
-# The code is very test centric as it is still in development phase, no releases yet
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description='Generate @1x @2x and @3x imagesets for Xcode')
-    parser.add_argument('-t', '--test', action='store_true', required=False)
+        description='Generate AppIcon Set and Imageset for Xcode')
+
     # if user doesnt pass ass again as input
-    parser.add_argument("-i", "--imageFolder", required=False)
+    parser.add_argument("-in", "--imageFolder",
+                        help="Folder containing image/s", required=True)
+
+    parser.add_argument("--appicon",
+                        help="Generate appiconset/s", action="store_true")
+    parser.add_argument("--imageset",
+                        help="Generate imageset/s", action="store_true")
+    parser.add_argument(
+        "--out", "--outputFolder", help="Output folder, default: Desktop Folder")
 
     args = parser.parse_args()
 
-    if args.test:
-
-        test()
-    else:
-        if not args.imageFolder:
-            args.imageFolder = input(
-                "Folder containing images you want to generate imageset for\n>").strip()
-
-        main(args.imageFolder)
+    main(imageFolder=args.imageFolder,
+         iconSet=args.appicon,
+         imageSet=args.imageset,
+         outputFolder=args.out
+         )

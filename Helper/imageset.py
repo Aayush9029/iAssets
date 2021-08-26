@@ -11,7 +11,7 @@ util = util.Utils()
 class ImageSet:
     # A class takes a SINGLE image path and carries out operation to the image
 
-    def __init__(self, name, imagePath):
+    def __init__(self, name, imagePath, savePath=None):
         self.scales = {
             "1x": [342, 342],
             "2x": [683, 683],
@@ -20,20 +20,22 @@ class ImageSet:
         self.name = name
         self.imagePath = imagePath
 
-        self.savePath = f"{path.expanduser('~')}/Desktop/iAssetsExports/ImageSets/{self.name}.imageset"
+        if savePath is None:
+            # Default output path is Desktop
+            self.savePath = f"{path.expanduser('~')}/Desktop/iAssetsExports/ImageSets/{self.name}.imageset"
+        else:
+            self.savePath = savePath
 
-    def saveImage(self, image, scale):
+    def save_image(self, image, scale):
         """Save image to imageset"""
         if not path.exists(self.savePath):
+            util.log_warning(f"Creating directory {self.savePath}")
             makedirs(self.savePath)
-        else:
-            util.log_warning(
-                f"{self.savePath} already exists, guess we're overwriting")
 
         image.save(f"{self.savePath}/{self.name}@{scale}.png")
         util.log_msg(f"Image Saved, name: {self.name}@{scale}.png")
 
-    def resizeImage(self, scale):
+    def resize_image(self, scale):
         """Resize image to width and height"""
 
         width = self.scales[scale][0]
@@ -43,14 +45,14 @@ class ImageSet:
         img = img.resize((width, height), Image.ANTIALIAS)
         util.log_msg(f"Image Resized, name: {self.name}, scale: {scale}")
 
-        self.saveImage(img, scale)
+        self.save_image(img, scale)
 
     def printDetails(self):
         print("image name: ", self.name)
         print("image path: ", self.imagePath)
         print("save image path: ", self.savePath)
 
-    def generateJson(self):
+    def generate_json(self):
         util.log_msg(f"Generating JSON for {self.name}")
         """Generate json file"""
 
@@ -78,15 +80,18 @@ class ImageSet:
         with open(f"{self.savePath}/Contents.json", "w") as f:
             json.dump(dataTemplate, f, indent=4)
 
-    def generateImageset(self):
+        # For testing purposes
+        return dataTemplate
+
+    def generate_imageset(self):
         """Generate imageset"""
         util.log_msg(f"Generating ImageSet for {self.name}")
 
         try:
             for scale in self.scales:
-                self.resizeImage(scale)
+                self.resize_image(scale)
 
-            self.generateJson()
+            self.generate_json()
             print("Generated imageset: ", self.savePath)
         except UnidentifiedImageError:
             print("Weird Image", name, path)
