@@ -197,6 +197,8 @@ class IconSet:
                     "filename": self.title_to_icon_name(1024),
                     "scale": "2x"
                 },
+
+
                 {
                     "size": "24x24",
                     "idiom": "watch",
@@ -218,6 +220,36 @@ class IconSet:
                     "idiom": "watch",
                     "filename": self.title_to_icon_name(58),
                     "role": "companionSettings",
+                    "scale": "2x"
+                },
+                {
+                    "size": "33x33",
+                    "idiom": "watch",
+                    "filename": self.title_to_icon_name(66),
+                    "role": "notificationCenter",
+                    "scale": "2x"
+                },
+                
+                {
+                    "size": "46x46",
+                    "idiom": "watch",
+                    "filename": self.title_to_icon_name(92),
+                    "role": "appLauncher",
+                    "scale": "2x"
+                },
+
+                {
+                    "size": "51x51",
+                    "idiom": "watch",
+                    "filename": self.title_to_icon_name(102),
+                    "role": "appLauncher",
+                    "scale": "2x"
+                },
+                {
+                    "size": "117x117",
+                    "idiom": "watch",
+                    "filename": self.title_to_icon_name(234),
+                    "role": "quickLook",
                     "scale": "2x"
                 },
                 {
@@ -357,3 +389,4 @@ class IconSet:
             print("Weird Image", name, path)
         except Exception as e:
             print("Unknown error", e)
+
