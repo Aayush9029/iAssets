@@ -233,7 +233,7 @@ class IconSet:
                 {
                     "size": "46x46",
                     "idiom": "watch",
-                    "filename": self.title_to_icon_name(92),
+                    "filename": self.title_to_icon_name(93),
                     "role": "appLauncher",
                     "scale": "2x"
                 },
@@ -241,7 +241,7 @@ class IconSet:
                 {
                     "size": "51x51",
                     "idiom": "watch",
-                    "filename": self.title_to_icon_name(102),
+                    "filename": self.title_to_icon_name(103),
                     "role": "appLauncher",
                     "scale": "2x"
                 },
